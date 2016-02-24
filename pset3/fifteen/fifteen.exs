@@ -42,8 +42,6 @@ defmodule Fifteen do
     space_location = board |> Enum.find_index fn x -> x == "_" end
     move_location = board |> Enum.find_index fn x -> x == move end
 
-    IO.inspect([space_location, move_location])
-
     move_distance = abs(move_location - space_location)
     if move_distance == 1 
     or move_distance == d
@@ -65,14 +63,15 @@ defmodule Fifteen do
 
   def won(board, d) do 
     won_board = _finished_board(d) |> List.insert_at(-1, "_")
-    case List.flatten(board) do
+
+    case board do
       ^won_board -> true
       _ -> false
     end
   end
 
   def loop(board, d) do 
-    clear
+    clear()
     draw(board, d)
 
     users_move = IO.gets "Tile to Move: "
@@ -80,7 +79,7 @@ defmodule Fifteen do
     board = move(board, users_move, d)
 
     unless won(board, d) do 
-      loop board, d
+      loop(board, d)
     end
   end
 
@@ -94,7 +93,7 @@ defmodule Fifteen do
       IO.puts "Board must be between #{@dim_min} x #{@dim_min} and #{@dim_max} x #{@dim_max}, inclusive."
     end
 
-    greet
+    greet()
 
     init(d) |> loop(d)
 
